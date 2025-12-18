@@ -1,4 +1,4 @@
 package com.example.demo.Repository;
-public interface UserService{
+public interface DocumentTypeRepository{
     
 }
