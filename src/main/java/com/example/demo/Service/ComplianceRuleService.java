@@ -1,4 +1,4 @@
 package com.example.demo.Service;
-public class ComService{
+public class ComplianceRuleService{
     
 }
