@@ -1,4 +1,4 @@
 package com.example.demo.Service.Implement;
-public class Compl{
+public class ComplianceScoreServiceImplement{
     
 }
