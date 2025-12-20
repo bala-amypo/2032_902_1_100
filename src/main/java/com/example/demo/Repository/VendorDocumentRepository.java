@@ -1,7 +1,7 @@
-package com.example.demo.repository;
+package com.example.demo.Repository;
 
-import com.example.demo.model.VendorDocument;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.Entity.VendorDocument;
+import org.springframework.data.jpa.Repository.JpaRepository;
 
 import java.util.List;
 
