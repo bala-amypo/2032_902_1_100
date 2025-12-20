@@ -1,19 +1,19 @@
-package com.example.demo.service.impl;
+package com.example.demo.Service.Implement;
 
 import com.example.demo.exception.ValidationException;
-import com.example.demo.model.Vendor;
-import com.example.demo.repository.VendorRepository;
-import com.example.demo.service.VendorService;
+import com.example.demo.Entity.Vendor;
+import com.example.demo.Repository.VendorRepository;
+import com.example.demo.Service.VendorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class VendorServiceImpl implements VendorService {
+public class VendorServiceImplement implements VendorService {
 
     private final VendorRepository vendorRepository;
 
-    public VendorServiceImpl(VendorRepository vendorRepository) {
+    public VendorServiceImplement(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
     }
 
