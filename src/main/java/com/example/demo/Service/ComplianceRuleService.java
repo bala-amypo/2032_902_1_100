@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.Service;
 
-import com.example.demo.model.ComplianceRule;
+import com.example.demo.Entity.ComplianceRule;
 
 import java.util.List;
 

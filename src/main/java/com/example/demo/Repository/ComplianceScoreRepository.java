@@ -1,7 +1,7 @@
-package com.example.demo.repository;
+package com.example.demo.Repository;
 
-import com.example.demo.model.ComplianceScore;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.Entity.ComplianceScore;
+import org.springframework.data.jpa.Repository.JpaRepository;
 
 import java.util.Optional;
 
