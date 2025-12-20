@@ -1,19 +1,19 @@
-package com.example.demo.service.impl;
+package com.example.demo.Service.Implement;
 
 import com.example.demo.exception.ValidationException;
-import com.example.demo.model.DocumentType;
-import com.example.demo.repository.DocumentTypeRepository;
-import com.example.demo.service.DocumentTypeService;
+import com.example.demo.Entity.DocumentType;
+import com.example.demo.Repository.DocumentTypeRepository;
+import com.example.demo.Service.DocumentTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DocumentTypeServiceImpl implements DocumentTypeService {
+public class DocumentTypeServiceImplement implements DocumentTypeService {
 
     private final DocumentTypeRepository documentTypeRepository;
 
-    public DocumentTypeServiceImpl(DocumentTypeRepository documentTypeRepository) {
+    public DocumentTypeServiceImplement(DocumentTypeRepository documentTypeRepository) {
         this.documentTypeRepository = documentTypeRepository;
     }
 

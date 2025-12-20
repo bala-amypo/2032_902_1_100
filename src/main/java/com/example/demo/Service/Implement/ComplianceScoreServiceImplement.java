@@ -1,16 +1,16 @@
-package com.example.demo.service.impl;
+package com.example.demo.Service.Implement;
 
 import com.example.demo.exception.ValidationException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
-import com.example.demo.service.ComplianceScoreService;
+import com.example.demo.Entity.*;
+import com.example.demo.Repository.*;
+import com.example.demo.Service.ComplianceScoreService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class ComplianceScoreServiceImpl implements ComplianceScoreService {
+public class ComplianceScoreServiceImplement implements ComplianceScoreService {
 
     private final ComplianceScoreRepository complianceScoreRepository;
     private final VendorRepository vendorRepository;

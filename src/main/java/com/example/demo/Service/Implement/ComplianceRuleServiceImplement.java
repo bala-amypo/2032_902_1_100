@@ -1,4 +1,4 @@
-package com.example.demo.Service.;
+package com.example.demo.Service.Implement;
 
 import com.example.demo.Entity.ComplianceRule;
 import com.example.demo.Repository.ComplianceRuleRepository;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ComplianceRuleServiceImpl implements ComplianceRuleService {
+public class ComplianceRuleServiceImplement implements ComplianceRuleService {
 
     private final ComplianceRuleRepository complianceRuleRepository;
 
-    public ComplianceRuleServiceImpl(ComplianceRuleRepository complianceRuleRepository) {
+    public ComplianceRuleServiceImplement(ComplianceRuleRepository complianceRuleRepository) {
         this.complianceRuleRepository = complianceRuleRepository;
     }
 
