@@ -17,7 +17,7 @@ public class ComplianceScoreServiceImplement implements ComplianceScoreService {
     private final VendorDocumentRepository vendorDocumentRepository;
     private final ComplianceRuleRepository complianceRuleRepository;
 
-    public ComplianceScoreServiceImpl(ComplianceScoreRepository complianceScoreRepository,
+    public ComplianceScoreServiceImplement(ComplianceScoreRepository complianceScoreRepository,
                                       VendorRepository vendorRepository,
                                       VendorDocumentRepository vendorDocumentRepository,
                                       ComplianceRuleRepository complianceRuleRepository) {
