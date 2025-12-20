@@ -1,8 +1,8 @@
-package com.example.demo.service.impl;
+package com.example.demo.Service.;
 
-import com.example.demo.model.ComplianceRule;
-import com.example.demo.repository.ComplianceRuleRepository;
-import com.example.demo.service.ComplianceRuleService;
+import com.example.demo.Entity.ComplianceRule;
+import com.example.demo.Repository.ComplianceRuleRepository;
+import com.example.demo.Service.ComplianceRuleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
