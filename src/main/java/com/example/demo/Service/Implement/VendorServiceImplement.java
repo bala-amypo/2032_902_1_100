@@ -1,19 +1,21 @@
-package com.example.demo.Service.Implement;
+package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
-import com.example.demo.Entity.Vendor;
-import com.example.demo.Repository.VendorRepository;
-import com.example.demo.Service.VendorService;
+import com.example.demo.model.Vendor;
+import com.example.demo.repository.VendorRepository;
+import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class VendorServiceImplement implements VendorService {
+public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
 
-    public VendorServiceImplement(VendorRepository vendorRepository) {
+    // ⚠ REQUIRED constructor order
+    public VendorServiceImpl(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
     }
 
@@ -27,7 +29,9 @@ public class VendorServiceImplement implements VendorService {
 
     @Override
     public Vendor getVendor(Long id) {
-        return vendorRepository.findById(id).orElse(null);
+        return vendorRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Vendor not found"));
     }
 
     @Override

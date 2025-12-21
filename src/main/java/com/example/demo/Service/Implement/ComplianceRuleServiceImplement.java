@@ -1,18 +1,20 @@
-package com.example.demo.Service.Implement;
+package com.example.demo.service.impl;
 
-import com.example.demo.Entity.ComplianceRule;
-import com.example.demo.Repository.ComplianceRuleRepository;
-import com.example.demo.Service.ComplianceRuleService;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.ComplianceRule;
+import com.example.demo.repository.ComplianceRuleRepository;
+import com.example.demo.service.ComplianceRuleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ComplianceRuleServiceImplement implements ComplianceRuleService {
+public class ComplianceRuleServiceImpl implements ComplianceRuleService {
 
     private final ComplianceRuleRepository complianceRuleRepository;
 
-    public ComplianceRuleServiceImplement(ComplianceRuleRepository complianceRuleRepository) {
+    // ⚠ REQUIRED constructor order
+    public ComplianceRuleServiceImpl(ComplianceRuleRepository complianceRuleRepository) {
         this.complianceRuleRepository = complianceRuleRepository;
     }
 
@@ -28,6 +30,8 @@ public class ComplianceRuleServiceImplement implements ComplianceRuleService {
 
     @Override
     public ComplianceRule getRule(Long id) {
-        return complianceRuleRepository.findById(id).orElse(null);
+        return complianceRuleRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Rule not found"));
     }
 }
