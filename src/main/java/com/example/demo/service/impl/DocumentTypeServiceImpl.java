@@ -14,16 +14,21 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private final DocumentTypeRepository documentTypeRepository;
 
-    
     public DocumentTypeServiceImpl(DocumentTypeRepository documentTypeRepository) {
         this.documentTypeRepository = documentTypeRepository;
     }
 
     @Override
     public DocumentType createDocumentType(DocumentType type) {
-        if (documentTypeRepository.existsByTypeName(type.getTypeName())) {
-            throw new ValidationException("Document Type already exists");
+
+        if (type.getTypeName() == null || type.getTypeName().isBlank()) {
+            throw new ValidationException("Document type name is required");
         }
+
+        if (documentTypeRepository.existsByTypeName(type.getTypeName())) {
+            throw new ValidationException("Document type already exists");
+        }
+
         return documentTypeRepository.save(type);
     }
 
