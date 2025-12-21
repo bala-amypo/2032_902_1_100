@@ -2,9 +2,9 @@ package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
-import com.example.demo.entity.DocumentType;
-import com.example.demo.entity.Vendor;
-import com.example.demo.entity.VendorDocument;
+import com.example.demo.model.DocumentType;
+import com.example.demo.model.Vendor;
+import com.example.demo.model.VendorDocument;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;

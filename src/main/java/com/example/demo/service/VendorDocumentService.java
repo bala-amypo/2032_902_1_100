@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.VendorDocument;
+import com.example.demo.model.VendorDocument;
 
 import java.util.List;
 
