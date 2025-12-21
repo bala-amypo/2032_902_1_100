@@ -2,8 +2,12 @@ package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.ComplianceScore;
+import com.example.demo.model.Vendor;
+import com.example.demo.model.VendorDocument;
+import com.example.demo.repository.ComplianceScoreRepository;
+import com.example.demo.repository.VendorDocumentRepository;
+import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.ComplianceScoreService;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +20,15 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
     private final ComplianceScoreRepository complianceScoreRepository;
     private final VendorRepository vendorRepository;
     private final VendorDocumentRepository vendorDocumentRepository;
-    private final ComplianceRuleRepository complianceRuleRepository;
-
 
     public ComplianceScoreServiceImpl(
             ComplianceScoreRepository complianceScoreRepository,
             VendorRepository vendorRepository,
-            VendorDocumentRepository vendorDocumentRepository,
-            ComplianceRuleRepository complianceRuleRepository) {
+            VendorDocumentRepository vendorDocumentRepository) {
 
         this.complianceScoreRepository = complianceScoreRepository;
         this.vendorRepository = vendorRepository;
         this.vendorDocumentRepository = vendorDocumentRepository;
-        this.complianceRuleRepository = complianceRuleRepository;
     }
 
     @Override
@@ -45,8 +45,11 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
         double achievedWeight = 0;
 
         for (VendorDocument doc : documents) {
-            if (doc.getDocumentType().getWeight() != null) {
+            if (doc.getDocumentType() != null &&
+                doc.getDocumentType().getWeight() != null) {
+
                 totalWeight += doc.getDocumentType().getWeight();
+
                 if (Boolean.TRUE.equals(doc.getIsValid())) {
                     achievedWeight += doc.getDocumentType().getWeight();
                 }
@@ -87,6 +90,6 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
         if (score >= 80) return "EXCELLENT";
         if (score >= 60) return "GOOD";
         if (score >= 40) return "POOR";
-        return "NON_COMPLIANT";
+        return "NONCOMPLIANT"; 
     }
 }
