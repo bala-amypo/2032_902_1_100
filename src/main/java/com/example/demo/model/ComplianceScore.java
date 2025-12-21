@@ -1,13 +1,15 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "compliance_scores",
-    uniqueConstraints = @UniqueConstraint(columnNames = "vendor_id")
-)
+@Table(name = "compliance_scores")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ComplianceScore {
 
     @Id
@@ -15,7 +17,7 @@ public class ComplianceScore {
     private Long id;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "vendor_id")
+    @JoinColumn(name = "vendor_id", unique = true)
     private Vendor vendor;
 
     @Column(nullable = false)
@@ -25,13 +27,11 @@ public class ComplianceScore {
 
     private String rating;
 
-    public ComplianceScore() {}
-
-    public ComplianceScore(Vendor vendor, Double scoreValue, String rating) {
-        this.vendor = vendor;
-        this.scoreValue = scoreValue;
-        this.rating = rating;
+    @PrePersist
+    void prePersist() {
+        if (scoreValue < 0 || scoreValue > 100) {
+            throw new IllegalArgumentException("Score must be between 0 and 100");
+        }
+        lastEvaluated = LocalDateTime.now();
     }
-
-    
 }

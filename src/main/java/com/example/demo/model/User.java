@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,6 +9,10 @@ import java.time.LocalDateTime;
     name = "users",
     uniqueConstraints = @UniqueConstraint(columnNames = "email")
 )
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -20,27 +25,18 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String password; // BCrypt hashed
 
+    @Column(nullable = false)
     private String role;
 
     private LocalDateTime createdAt;
 
-    public User() {}
-
-    public User(String fullName, String email, String password, String role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
     @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        if (this.role == null) {
-            this.role = "USER";
+    void prePersist() {
+        createdAt = LocalDateTime.now();
+        if (role == null) {
+            role = "USER";
         }
     }
-
 }

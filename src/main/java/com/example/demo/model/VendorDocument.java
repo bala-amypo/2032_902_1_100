@@ -1,11 +1,16 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vendor_documents")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class VendorDocument {
 
     @Id
@@ -27,26 +32,14 @@ public class VendorDocument {
 
     private Boolean isValid;
 
-    public VendorDocument() {}
-
-    public VendorDocument(Vendor vendor, DocumentType documentType,
-                          String fileUrl, LocalDate expiryDate) {
-        this.vendor = vendor;
-        this.documentType = documentType;
-        this.fileUrl = fileUrl;
-        this.expiryDate = expiryDate;
-    }
-
     @PrePersist
-    public void prePersist() {
-        this.uploadedAt = LocalDateTime.now();
+    void prePersist() {
+        uploadedAt = LocalDateTime.now();
 
-        if (expiryDate == null || expiryDate.isAfter(LocalDate.now())) {
-            this.isValid = true;
-        } else {
-            this.isValid = false;
+        if (expiryDate != null && expiryDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Expiry date must be in the future");
         }
-    }
 
-   
+        isValid = (expiryDate == null || expiryDate.isAfter(LocalDate.now()));
+    }
 }

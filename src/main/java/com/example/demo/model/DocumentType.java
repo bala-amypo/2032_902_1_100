@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,10 @@ import java.util.Set;
     name = "document_types",
     uniqueConstraints = @UniqueConstraint(columnNames = "typeName")
 )
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DocumentType {
 
     @Id
@@ -29,24 +34,14 @@ public class DocumentType {
     private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "supportedDocumentTypes")
+    @Builder.Default
     private Set<Vendor> vendors = new HashSet<>();
 
-    public DocumentType() {}
-
-    public DocumentType(String typeName, String description, Boolean required, Integer weight) {
-        this.typeName = typeName;
-        this.description = description;
-        this.required = required;
-        this.weight = weight;
-    }
-
     @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        if (this.weight == null || this.weight < 0) {
-            this.weight = 0;
+    void prePersist() {
+        createdAt = LocalDateTime.now();
+        if (weight == null || weight < 0) {
+            weight = 0;
         }
     }
-
-    
 }

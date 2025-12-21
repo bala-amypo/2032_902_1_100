@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,6 +9,10 @@ import java.time.LocalDateTime;
     name = "compliance_rules",
     uniqueConstraints = @UniqueConstraint(columnNames = "ruleName")
 )
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ComplianceRule {
 
     @Id
@@ -19,29 +24,19 @@ public class ComplianceRule {
 
     private String ruleDescription;
 
+    @Column(nullable = false)
     private String matchType;
 
+    @Column(nullable = false)
     private Double threshold;
 
     private LocalDateTime createdAt;
 
-    public ComplianceRule() {}
-
-    public ComplianceRule(String ruleName, String ruleDescription,
-                          String matchType, Double threshold) {
-        this.ruleName = ruleName;
-        this.ruleDescription = ruleDescription;
-        this.matchType = matchType;
-        this.threshold = threshold;
-    }
-
     @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        if (this.threshold == null || this.threshold < 0) {
-            this.threshold = 0.0;
+    void prePersist() {
+        createdAt = LocalDateTime.now();
+        if (threshold == null || threshold < 0) {
+            threshold = 0.0;
         }
     }
-
-    
 }

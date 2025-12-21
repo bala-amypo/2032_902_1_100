@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,10 @@ import java.util.Set;
     name = "vendors",
     uniqueConstraints = @UniqueConstraint(columnNames = "vendorName")
 )
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Vendor {
 
     @Id
@@ -31,21 +36,11 @@ public class Vendor {
         joinColumns = @JoinColumn(name = "vendor_id"),
         inverseJoinColumns = @JoinColumn(name = "document_type_id")
     )
+    @Builder.Default
     private Set<DocumentType> supportedDocumentTypes = new HashSet<>();
 
-    public Vendor() {}
-
-    public Vendor(String vendorName, String email, String phone, String industry) {
-        this.vendorName = vendorName;
-        this.email = email;
-        this.phone = phone;
-        this.industry = industry;
-    }
-
     @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    void prePersist() {
+        createdAt = LocalDateTime.now();
     }
-
-    
 }
