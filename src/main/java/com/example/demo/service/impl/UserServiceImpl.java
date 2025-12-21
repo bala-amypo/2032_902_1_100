@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // ⚠ REQUIRED constructor order
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -23,13 +22,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
+
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new ValidationException("Email is required");
+        }
+
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new ValidationException("Password is required");
+        }
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already in use");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getRole() == null) {
+        if (user.getRole() == null || user.getRole().isBlank()) {
             user.setRole("USER");
         }
 

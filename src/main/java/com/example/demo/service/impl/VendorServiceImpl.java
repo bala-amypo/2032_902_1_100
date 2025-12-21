@@ -14,21 +14,36 @@ public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
 
-    // ⚠ REQUIRED constructor order
+    // REQUIRED constructor
     public VendorServiceImpl(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
     }
 
     @Override
     public Vendor createVendor(Vendor vendor) {
+
+        if (vendor == null) {
+            throw new ValidationException("Vendor data is required");
+        }
+
+        if (vendor.getVendorName() == null || vendor.getVendorName().isBlank()) {
+            throw new ValidationException("Vendor name is required");
+        }
+
         if (vendorRepository.existsByVendorName(vendor.getVendorName())) {
             throw new ValidationException("Vendor name already exists");
         }
+
         return vendorRepository.save(vendor);
     }
 
     @Override
     public Vendor getVendor(Long id) {
+
+        if (id == null) {
+            throw new ValidationException("Vendor ID is required");
+        }
+
         return vendorRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Vendor not found"));

@@ -22,7 +22,6 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
 
-    
     public VendorDocumentServiceImpl(
             VendorDocumentRepository vendorDocumentRepository,
             VendorRepository vendorRepository,
@@ -36,6 +35,14 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     @Override
     public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
 
+        if (vendorId == null || typeId == null) {
+            throw new ValidationException("Vendor ID and Document Type ID are required");
+        }
+
+        if (document == null) {
+            throw new ValidationException("Document data is required");
+        }
+
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Vendor not found"));
@@ -44,7 +51,7 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Document Type not found"));
 
-        if (document.getFileUrl() == null || document.getFileUrl().isEmpty()) {
+        if (document.getFileUrl() == null || document.getFileUrl().isBlank()) {
             throw new ValidationException("File URL is required");
         }
 
@@ -56,6 +63,7 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
         document.setVendor(vendor);
         document.setDocumentType(type);
         document.setUploadedAt(LocalDateTime.now());
+
         document.setIsValid(
                 document.getExpiryDate() == null ||
                         document.getExpiryDate().isAfter(LocalDate.now())
@@ -66,11 +74,21 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
 
     @Override
     public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
+
+        if (vendorId == null) {
+            throw new ValidationException("Vendor ID is required");
+        }
+
         return vendorDocumentRepository.findByVendorId(vendorId);
     }
 
     @Override
     public VendorDocument getDocument(Long id) {
+
+        if (id == null) {
+            throw new ValidationException("Document ID is required");
+        }
+
         return vendorDocumentRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Document not found"));
