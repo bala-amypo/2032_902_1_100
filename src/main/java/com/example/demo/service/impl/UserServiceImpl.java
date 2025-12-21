@@ -6,7 +6,6 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,15 +13,18 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User registerUser(User user) {
+
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new ValidationException("Email already exists");
+            throw new ValidationException("Duplicate email");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Password stored as plain text (NOT recommended for production)
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new ValidationException("Password cannot be empty");
+        }
 
         if (user.getRole() == null) {
             user.setRole("USER");
