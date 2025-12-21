@@ -1,25 +1,37 @@
-package com.example.demo.Entity;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Table(
+    name = "compliance_scores",
+    uniqueConstraints = @UniqueConstraint(columnNames = "vendor_id")
+)
 public class ComplianceScore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
+    @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
+    @Column(nullable = false)
     private Double scoreValue;
+
+    private LocalDateTime lastEvaluated;
 
     private String rating;
 
-    private LocalDateTime lastEvaluated;
+    public ComplianceScore() {}
+
+    public ComplianceScore(Vendor vendor, Double scoreValue, String rating) {
+        this.vendor = vendor;
+        this.scoreValue = scoreValue;
+        this.rating = rating;
+    }
+
+    
 }
