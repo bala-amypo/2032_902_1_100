@@ -17,17 +17,17 @@ public class VendorController {
     }
 
     @PostMapping
-    public Vendor create(@RequestBody Vendor vendor) {
+    public Vendor createVendor(@RequestBody Vendor vendor) {
         return vendorService.createVendor(vendor);
     }
 
     @GetMapping
-    public List<Vendor> getAll() {
+    public List<Vendor> getAllVendors() {
         return vendorService.getAllVendors();
     }
 
     @GetMapping("/{id}")
-    public Vendor get(@PathVariable Long id) {
+    public Vendor getVendor(@PathVariable Long id) {
         return vendorService.getVendor(id);
     }
 }

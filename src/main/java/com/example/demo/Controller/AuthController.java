@@ -1,16 +1,14 @@
 package com.example.demo.controller;
 
-
-import com.example.demo.Entity.User;
-import com.example.demo.security.JwtUtil;
+import com.example.demo.model.User;
+import com.example.demo.payload.AuthRequest;
+import com.example.demo.payload.AuthResponse;
 import com.example.demo.service.UserService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import com.example.demo.util.JwtUtil;
+import org.springframework.authentication.AuthenticationManager;
+import org.springframework.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,35 +27,25 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest request) {
-        User user = new User();
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        return userService.register(user);
+    public User register(@RequestBody User user) {
+        return userService.registerUser(user);
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody LoginRequest request) {
+    public AuthResponse login(@RequestBody AuthRequest request) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
 
-        User user = userService.findByEmail(request.getEmail());
-
-        String token = jwtUtil.generateToken(
-                authentication,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
-
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        return response;
+        String token = jwtUtil.generateToken(request.getEmail());
+        return new AuthResponse(token);
     }
 }
