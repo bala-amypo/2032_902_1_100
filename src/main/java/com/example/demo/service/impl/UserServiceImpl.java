@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+/* package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
@@ -47,3 +47,4 @@ public class UserServiceImpl implements UserService {
                         new ResourceNotFoundException("User not found with id: " + id));
     }
 }
+ */
