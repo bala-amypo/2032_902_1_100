@@ -1,6 +1,6 @@
-package com.example.demo.Service;
+package com.example.demo.service;
 
-import com.example.demo.Entity.DocumentType;
+import com.example.demo.model.DocumentType;
 
 import java.util.List;
 
