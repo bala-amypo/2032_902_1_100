@@ -1,26 +1,24 @@
-package com.example.demo.Entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "vendor_documents")
 public class VendorDocument {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Vendor vendor;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DocumentType documentType;
 
+    @Column(nullable = false)
     private String fileUrl;
 
     private LocalDateTime uploadedAt;
@@ -29,13 +27,26 @@ public class VendorDocument {
 
     private Boolean isValid;
 
+    public VendorDocument() {}
+
+    public VendorDocument(Vendor vendor, DocumentType documentType,
+                          String fileUrl, LocalDate expiryDate) {
+        this.vendor = vendor;
+        this.documentType = documentType;
+        this.fileUrl = fileUrl;
+        this.expiryDate = expiryDate;
+    }
+
     @PrePersist
     public void prePersist() {
         this.uploadedAt = LocalDateTime.now();
+
         if (expiryDate == null || expiryDate.isAfter(LocalDate.now())) {
             this.isValid = true;
         } else {
             this.isValid = false;
         }
     }
+
+   
 }
