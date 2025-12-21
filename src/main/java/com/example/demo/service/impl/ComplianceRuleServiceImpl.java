@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.model.ComplianceRule;
 import com.example.demo.repository.ComplianceRuleRepository;
 import com.example.demo.service.ComplianceRuleService;
@@ -13,13 +14,19 @@ public class ComplianceRuleServiceImpl implements ComplianceRuleService {
 
     private final ComplianceRuleRepository complianceRuleRepository;
 
-    // ⚠ REQUIRED constructor order
+   
     public ComplianceRuleServiceImpl(ComplianceRuleRepository complianceRuleRepository) {
         this.complianceRuleRepository = complianceRuleRepository;
     }
 
     @Override
     public ComplianceRule createRule(ComplianceRule rule) {
+
+        
+        if (rule.getThreshold() != null && rule.getThreshold() < 0) {
+            throw new ValidationException("Compliance score cannot be negative");
+        }
+
         return complianceRuleRepository.save(rule);
     }
 
