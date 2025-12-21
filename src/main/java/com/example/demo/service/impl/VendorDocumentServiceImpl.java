@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
-
+import com.example.demo.exception.ValidationException;
 import com.example.demo.model.DocumentType;
 import com.example.demo.model.Vendor;
 import com.example.demo.model.VendorDocument;
@@ -9,88 +9,55 @@ import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorDocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class VendorDocumentServiceImpl implements VendorDocumentService {
 
-    private final VendorDocumentRepository vendorDocumentRepository;
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
-
-    public VendorDocumentServiceImpl(
-            VendorDocumentRepository vendorDocumentRepository,
-            VendorRepository vendorRepository,
-            DocumentTypeRepository documentTypeRepository) {
-
-        this.vendorDocumentRepository = vendorDocumentRepository;
-        this.vendorRepository = vendorRepository;
-        this.documentTypeRepository = documentTypeRepository;
-    }
+    private final VendorDocumentRepository vendorDocumentRepository;
 
     @Override
     public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
 
-        if (vendorId == null || typeId == null) {
-            throw new ValidationException("Vendor ID and Document Type ID are required");
-        }
-
-        if (document == null) {
-            throw new ValidationException("Document data is required");
-        }
-
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Vendor not found"));
+                        new ResourceNotFoundException("Vendor not found with id: " + vendorId));
 
         DocumentType type = documentTypeRepository.findById(typeId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Document Type not found"));
+                        new ResourceNotFoundException("Document type not found with id: " + typeId));
 
         if (document.getFileUrl() == null || document.getFileUrl().isBlank()) {
-            throw new ValidationException("File URL is required");
+            throw new ValidationException("fileUrl is required");
         }
 
         if (document.getExpiryDate() != null &&
-                document.getExpiryDate().isBefore(LocalDate.now())) {
-            throw new ValidationException("Document has expired");
+            document.getExpiryDate().isBefore(LocalDate.now())) {
+            throw new ValidationException("Expiry date cannot be in the past");
         }
 
         document.setVendor(vendor);
         document.setDocumentType(type);
-        document.setUploadedAt(LocalDateTime.now());
-
-        document.setIsValid(
-                document.getExpiryDate() == null ||
-                        document.getExpiryDate().isAfter(LocalDate.now())
-        );
 
         return vendorDocumentRepository.save(document);
     }
 
     @Override
     public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
-
-        if (vendorId == null) {
-            throw new ValidationException("Vendor ID is required");
-        }
-
         return vendorDocumentRepository.findByVendorId(vendorId);
     }
 
     @Override
     public VendorDocument getDocument(Long id) {
-
-        if (id == null) {
-            throw new ValidationException("Document ID is required");
-        }
-
         return vendorDocumentRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Document not found"));
+                        new ResourceNotFoundException("Document not found with id: " + id));
     }
 }

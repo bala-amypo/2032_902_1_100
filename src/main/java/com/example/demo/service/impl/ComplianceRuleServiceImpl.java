@@ -1,44 +1,40 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
-
+import com.example.demo.exception.ValidationException;
 import com.example.demo.model.ComplianceRule;
 import com.example.demo.repository.ComplianceRuleRepository;
 import com.example.demo.service.ComplianceRuleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ComplianceRuleServiceImpl implements ComplianceRuleService {
 
-    private final ComplianceRuleRepository complianceRuleRepository;
-
-   
-    public ComplianceRuleServiceImpl(ComplianceRuleRepository complianceRuleRepository) {
-        this.complianceRuleRepository = complianceRuleRepository;
-    }
+    private final ComplianceRuleRepository ruleRepository;
 
     @Override
     public ComplianceRule createRule(ComplianceRule rule) {
-
-        
-        if (rule.getThreshold() != null && rule.getThreshold() < 0) {
-            throw new ValidationException("Compliance score cannot be negative");
+        if (rule.getRuleName() != null &&
+            ruleRepository.findAll().stream()
+                .anyMatch(r -> r.getRuleName().equals(rule.getRuleName()))) {
+            throw new ValidationException("Rule name already exists");
         }
-
-        return complianceRuleRepository.save(rule);
+        return ruleRepository.save(rule);
     }
 
     @Override
     public List<ComplianceRule> getAllRules() {
-        return complianceRuleRepository.findAll();
+        return ruleRepository.findAll();
     }
 
     @Override
     public ComplianceRule getRule(Long id) {
-        return complianceRuleRepository.findById(id)
+        return ruleRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Rule not found"));
+                        new ResourceNotFoundException("Compliance rule not found with id: " + id));
     }
 }

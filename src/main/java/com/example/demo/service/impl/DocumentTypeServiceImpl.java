@@ -1,34 +1,26 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
-
+import com.example.demo.exception.ValidationException;
 import com.example.demo.model.DocumentType;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.service.DocumentTypeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private final DocumentTypeRepository documentTypeRepository;
 
-    public DocumentTypeServiceImpl(DocumentTypeRepository documentTypeRepository) {
-        this.documentTypeRepository = documentTypeRepository;
-    }
-
     @Override
     public DocumentType createDocumentType(DocumentType type) {
-
-        if (type.getTypeName() == null || type.getTypeName().isBlank()) {
-            throw new ValidationException("Document type name is required");
-        }
-
         if (documentTypeRepository.existsByTypeName(type.getTypeName())) {
             throw new ValidationException("Document type already exists");
         }
-
         return documentTypeRepository.save(type);
     }
 
@@ -41,6 +33,6 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     public DocumentType getDocumentType(Long id) {
         return documentTypeRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Document Type not found"));
+                        new ResourceNotFoundException("Document type not found with id: " + id));
     }
 }
