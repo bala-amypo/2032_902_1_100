@@ -1,23 +1,35 @@
+package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf().disable()   
+            // 🔥 Disable CSRF for REST APIs
+            .csrf().disable()
+
+            // 🔥 Enable CORS
             .cors()
             .and()
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
+
+            // 🔥 Authorization rules (OLD syntax)
+            .authorizeRequests()
+                .antMatchers(
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/swagger-ui.html"
                 ).permitAll()
-                .requestMatchers("/api/**").permitAll()   
-                .anyRequest().authenticated()
-            );
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated();
 
         return http.build();
     }
