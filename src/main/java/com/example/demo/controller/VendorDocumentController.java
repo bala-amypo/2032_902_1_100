@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@PostMapping("/api/vendor-documents")
+@RequestMapping("/api/vendor-documents")
 public class VendorDocumentController {
 
     private final VendorDocumentService vendorDocumentService;
