@@ -1,37 +1,40 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "compliance_scores")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ComplianceScore {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    private Double scoreValue;
+    private String rating;
+    private LocalDateTime evaluatedAt;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "vendor_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    @Column(nullable = false)
-    private Double scoreValue;
-
-    private LocalDateTime lastEvaluated;
-
-    private String rating;
-
     @PrePersist
-    void prePersist() {
-        if (scoreValue < 0 || scoreValue > 100) {
-            throw new IllegalArgumentException("Score must be between 0 and 100");
-        }
-        lastEvaluated = LocalDateTime.now();
+    public void prePersist() {
+        this.evaluatedAt = LocalDateTime.now();
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public Double getScoreValue() { return scoreValue; }
+    public void setScoreValue(Double scoreValue) { this.scoreValue = scoreValue; }
+    
+    public String getRating() { return rating; }
+    public void setRating(String rating) { this.rating = rating; }
+    
+    public LocalDateTime getEvaluatedAt() { return evaluatedAt; }
+    public void setEvaluatedAt(LocalDateTime evaluatedAt) { this.evaluatedAt = evaluatedAt; }
+    
+    public Vendor getVendor() { return vendor; }
+    public void setVendor(Vendor vendor) { this.vendor = vendor; }
 }

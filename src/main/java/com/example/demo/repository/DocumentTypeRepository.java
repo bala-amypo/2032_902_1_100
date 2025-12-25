@@ -1,13 +1,11 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.DocumentType;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
+import java.util.Optional;
 
-public interface DocumentTypeRepository extends JpaRepository<DocumentType, Long> {
-
-    boolean existsByTypeName(String typeName);
-
+public interface DocumentTypeRepository {
+    DocumentType save(DocumentType documentType);
+    Optional<DocumentType> findById(Long id);
     List<DocumentType> findByRequiredTrue();
 }
