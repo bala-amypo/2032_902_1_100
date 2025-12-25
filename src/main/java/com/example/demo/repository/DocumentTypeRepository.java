@@ -1,11 +1,16 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.DocumentType;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface DocumentTypeRepository {
-    DocumentType save(DocumentType documentType);
+import java.util.List;
+
+@Repository
+public interface DocumentTypeRepository
+        extends JpaRepository<DocumentType, Long> {
+DocumentType save(DocumentType documentType);
     Optional<DocumentType> findById(Long id);
     List<DocumentType> findByRequiredTrue();
 }
+
