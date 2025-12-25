@@ -1,51 +1,52 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import com.example.demo.model.User;
-// import com.example.demo.payload.AuthRequest;
-// import com.example.demo.payload.AuthResponse;
-// import com.example.demo.service.UserService;
-// import com.example.demo.util.JwtUtil;
-// import org.springframework.authentication.AuthenticationManager;
-// import org.springframework.authentication.UsernamePasswordAuthenticationToken;
-// import org.springframework.security.authentication.BadCredentialsException;
-// import org.springframework.web.bind.annotation.*;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.model.User;
+import com.example.demo.service.UserService;
+import com.example.demo.util.ValidationUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/auth")
-// public class AuthController {
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
 
-//     private final UserService userService;
-//     private final AuthenticationManager authenticationManager;
-//     private final JwtUtil jwtUtil;
+    @Autowired
+    private UserService userService;
 
-//     public AuthController(UserService userService,
-//                           AuthenticationManager authenticationManager,
-//                           JwtUtil jwtUtil) {
-//         this.userService = userService;
-//         this.authenticationManager = authenticationManager;
-//         this.jwtUtil = jwtUtil;
-//     }
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        // Validate input
+        ValidationUtils.validateEmail(user.getEmail());
+        ValidationUtils.validatePassword(user.getPassword());
+        ValidationUtils.validateNotEmpty(user.getRole(), "Role");
+        
+        User savedUser = userService.registerUser(user);
+        return ResponseEntity.ok(savedUser);
+    }
 
-//     @PostMapping("/register")
-//     public User register(@RequestBody User user) {
-//         return userService.registerUser(user);
-//     }
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        ValidationUtils.validateNotNull(id, "User ID");
+        User user = userService.getById(id);
+        return ResponseEntity.ok(user);
+    }
 
-//     @PostMapping("/login")
-//     public AuthResponse login(@RequestBody AuthRequest request) {
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        ValidationUtils.validateEmail(email);
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(user);
+    }
 
-//         try {
-//             authenticationManager.authenticate(
-//                     new UsernamePasswordAuthenticationToken(
-//                             request.getEmail(),
-//                             request.getPassword()
-//                     )
-//             );
-//         } catch (BadCredentialsException e) {
-//             throw new BadCredentialsException("Invalid credentials");
-//         }
-
-//         String token = jwtUtil.generateToken(request.getEmail());
-//         return new AuthResponse(token);
-//     }
-// }
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody User loginRequest) {
+        ValidationUtils.validateEmail(loginRequest.getEmail());
+        ValidationUtils.validateNotEmpty(loginRequest.getPassword(), "Password");
+        
+        User user = userService.findByEmail(loginRequest.getEmail());
+        AuthResponse response = new AuthResponse("jwt-token", user.getId(), user.getEmail(), user.getRole());
+        return ResponseEntity.ok(response);
+    }
+}
