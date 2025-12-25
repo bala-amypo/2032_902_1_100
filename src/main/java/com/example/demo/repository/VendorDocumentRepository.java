@@ -14,7 +14,6 @@ public interface VendorDocumentRepository
 
     // If expiryDate is a field in VendorDocument
     VendorDocument save(VendorDocument vendorDocument);
-    Optional<VendorDocument> findById(Long id);
     List<VendorDocument> findByExpiryDateBefore(LocalDate date);
 
     List<VendorDocument> findByVendor(Vendor vendor);

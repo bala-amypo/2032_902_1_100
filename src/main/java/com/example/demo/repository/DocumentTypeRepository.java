@@ -10,7 +10,6 @@ import java.util.List;
 public interface DocumentTypeRepository
         extends JpaRepository<DocumentType, Long> {
 DocumentType save(DocumentType documentType);
-    Optional<DocumentType> findById(Long id);
     List<DocumentType> findByRequiredTrue();
 }
 
