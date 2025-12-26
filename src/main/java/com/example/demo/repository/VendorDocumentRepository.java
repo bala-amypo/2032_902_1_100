@@ -2,19 +2,13 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Vendor;
 import com.example.demo.model.VendorDocument;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface VendorDocumentRepository
-        extends JpaRepository<VendorDocument, Long> {
-
-    // If expiryDate is a field in VendorDocument
+public interface VendorDocumentRepository {
     VendorDocument save(VendorDocument vendorDocument);
-    List<VendorDocument> findByExpiryDateBefore(LocalDate date);
-
+    Optional<VendorDocument> findById(Long id);
+    List<VendorDocument> findExpiredDocuments(LocalDate date);
     List<VendorDocument> findByVendor(Vendor vendor);
 }

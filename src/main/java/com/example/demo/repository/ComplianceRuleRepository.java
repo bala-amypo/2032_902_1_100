@@ -1,13 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.ComplianceRule;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ComplianceRuleRepository
-        extends JpaRepository<ComplianceRule, Long> {
-            ComplianceRule save(ComplianceRule complianceRule);
+public interface ComplianceRuleRepository {
+    ComplianceRule save(ComplianceRule complianceRule);
 }
-
-
