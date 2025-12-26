@@ -3,12 +3,13 @@ package com.example.demo.service.impl;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Vendor;
 import com.example.demo.repository.VendorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VendorServiceImpl implements VendorService {
-    private final VendorRepository vendorRepository;
+    @Autowired VendorRepository vendorRepository;
 
     public VendorServiceImpl(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;

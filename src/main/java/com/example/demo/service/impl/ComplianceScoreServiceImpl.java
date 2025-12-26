@@ -19,8 +19,10 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
     DocumentTypeRepository documentTypeRepository;
     @Autowired 
     VendorDocumentRepository vendorDocumentRepository;
-    @Autowired ComplianceScoreRepository complianceScoreRepository;
-    private final ComplianceScoringEngine scoringEngine = new ComplianceScoringEngine();
+    @Autowired 
+    ComplianceScoreRepository complianceScoreRepository;
+    @Autowired 
+    ComplianceScoringEngine scoringEngine = new ComplianceScoringEngine();
 
     public ComplianceScoreServiceImpl(VendorRepository vendorRepository,
                                     DocumentTypeRepository documentTypeRepository,

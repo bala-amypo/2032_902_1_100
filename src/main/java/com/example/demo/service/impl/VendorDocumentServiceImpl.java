@@ -6,6 +6,7 @@ import com.example.demo.model.Vendor;
 import com.example.demo.model.VendorDocument;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorDocumentService;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,12 @@ import java.time.LocalDate;
 
 @Service
 public class VendorDocumentServiceImpl implements VendorDocumentService {
-    private final VendorDocumentRepository vendorDocumentRepository;
-    private final VendorRepository vendorRepository;
-    private final DocumentTypeRepository documentTypeRepository;
+    @Autowired 
+    VendorDocumentRepository vendorDocumentRepository;
+    @Autowired 
+    VendorRepository vendorRepository;
+    @Autowired 
+    DocumentTypeRepository documentTypeRepository;
 
     public VendorDocumentServiceImpl(VendorDocumentRepository vendorDocumentRepository,
                                    VendorRepository vendorRepository,
