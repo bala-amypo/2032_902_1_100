@@ -1,16 +1,24 @@
 package com.example.demo.util;
 
 import com.example.demo.model.DocumentType;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component   
 public class ComplianceScoringEngine {
 
-    public double calculateScore(List<DocumentType> requiredTypes, List<DocumentType> validDocTypes) {
+    public double calculateScore(List<DocumentType> requiredTypes,
+                                 List<DocumentType> validDocTypes) {
+
         if (requiredTypes.isEmpty()) {
             return 100.0;
         }
 
-        int totalWeight = requiredTypes.stream().mapToInt(DocumentType::getWeight).sum();
+        int totalWeight = requiredTypes.stream()
+                .mapToInt(DocumentType::getWeight)
+                .sum();
+
         int validWeight = validDocTypes.stream()
                 .filter(requiredTypes::contains)
                 .mapToInt(DocumentType::getWeight)
