@@ -4,6 +4,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.ComplianceScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.util.ComplianceScoringEngine;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class ComplianceScoreServiceImpl implements ComplianceScoreService {
-    private final VendorRepository vendorRepository;
-    private final DocumentTypeRepository documentTypeRepository;
-    private final VendorDocumentRepository vendorDocumentRepository;
-    private final ComplianceScoreRepository complianceScoreRepository;
+    @Autowired 
+    VendorRepository vendorRepository;
+    @Autowired 
+    DocumentTypeRepository documentTypeRepository;
+    @Autowired 
+    VendorDocumentRepository vendorDocumentRepository;
+    @Autowired ComplianceScoreRepository complianceScoreRepository;
     private final ComplianceScoringEngine scoringEngine = new ComplianceScoringEngine();
 
     public ComplianceScoreServiceImpl(VendorRepository vendorRepository,
