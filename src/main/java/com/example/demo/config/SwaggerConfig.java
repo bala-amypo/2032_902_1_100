@@ -26,3 +26,5 @@ public class SwaggerConfig {
                                         .bearerFormat("JWT")));
     }
 }
+
+https://9047.408procr.amypo.ai/
