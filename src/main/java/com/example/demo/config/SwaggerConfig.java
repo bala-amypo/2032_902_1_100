@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
                 // Server configuration (Swagger base URL)
                 .servers(List.of(
-                        new Server().url("https://9047.408procr.amypo.ai/")
+                        new Server().url("https://9344.408procr.amypo.ai/")
                 ))
 
                 // Security requirement
